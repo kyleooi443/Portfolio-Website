@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 486" role="img" aria-label="Concept artwork for CastAI"><desc>An experiment in live storytelling</desc>
+  <rect width="720" height="486" fill="#e7e3ea"/>
+  <g opacity=".52" fill="none" stroke="#ffffff" stroke-width="1"><path d="M0 82h720M0 164h720M0 246h720M0 328h720M0 410h720M90 0v486M180 0v486M270 0v486M360 0v486M450 0v486M540 0v486M630 0v486"/></g>
+  <circle cx="349" cy="206" r="119" fill="#d4ccd9"/><rect x="313" y="105" width="73" height="150" rx="36" fill="#526d62"/><rect x="327" y="119" width="45" height="118" rx="22" fill="#719283"/><path d="M285 208c0 47 27 74 64 74s64-27 64-74M349 282v42M316 324h66" fill="none" stroke="#344c44" stroke-width="9" stroke-linecap="round"/><g fill="#3e6c62"><rect x="140" y="177" width="9" height="58" rx="4"/><rect x="159" y="193" width="9" height="26" rx="4"/><rect x="178" y="163" width="9" height="86" rx="4"/><rect x="511" y="183" width="9" height="46" rx="4"/><rect x="530" y="165" width="9" height="82" rx="4"/><rect x="549" y="193" width="9" height="26" rx="4"/></g>
+  <rect x="28" y="27" width="143" height="25" rx="3" fill="#ffffff" opacity=".84"/><text x="39" y="44" fill="#344942" font-family="monospace" font-size="11">CONCEPT STUDY</text>
+  <path d="M35 415h190" stroke="#6b897a" stroke-width="2" opacity=".5"/>
+</svg>

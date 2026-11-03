@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 486" role="img" aria-label="Concept artwork for AGOS"><desc>Forecasts, dispatch, and resilience</desc>
+  <rect width="720" height="486" fill="#dbe8e8"/>
+  <g opacity=".52" fill="none" stroke="#ffffff" stroke-width="1"><path d="M0 82h720M0 164h720M0 246h720M0 328h720M0 410h720M90 0v486M180 0v486M270 0v486M360 0v486M450 0v486M540 0v486M630 0v486"/></g>
+  <path d="M86 132c98 0 109 151 215 151s111-151 219-151 102 85 155 85" fill="none" stroke="#3e6c62" stroke-width="24" stroke-linecap="round" opacity=".85"/><path d="M86 167c98 0 109 151 215 151s111-151 219-151 102 85 155 85" fill="none" stroke="#84aaa7" stroke-width="12" stroke-linecap="round"/><circle cx="301" cy="283" r="13" fill="#ffffff" stroke="#3e6c62" stroke-width="5"/><circle cx="520" cy="132" r="13" fill="#ffffff" stroke="#3e6c62" stroke-width="5"/><path d="M106 91v251M106 342h510" stroke="#789691" stroke-width="2" opacity=".7"/>
+  <rect x="28" y="27" width="143" height="25" rx="3" fill="#ffffff" opacity=".84"/><text x="39" y="44" fill="#344942" font-family="monospace" font-size="11">CONCEPT STUDY</text>
+  <path d="M35 415h190" stroke="#6b897a" stroke-width="2" opacity=".5"/>
+</svg>
