@@ -9,7 +9,6 @@ test('every project card resolves to a unique case study', () => {
   for (const project of projects) {
     assert.equal(getProject(project.slug)?.title, project.title);
     assert.ok(project.status);
-    assert.ok(project.coverAlt);
     assert.ok(getProjectStory(project.slug)?.includes('##'), `${project.slug} needs an MDX story`);
   }
 });

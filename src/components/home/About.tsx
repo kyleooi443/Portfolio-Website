@@ -3,8 +3,8 @@ import { getVerifiedSocials, profile } from '@/data/profile';
 
 export function About() {
   const socials = getVerifiedSocials();
-  return <section id="about" className="about-panel section-offset" aria-labelledby="about-title">
-    <div className="about-main"><h2 id="about-title">Hey there!</h2><p className="about-intro">{profile.introduction}</p><p className="about-small">I&apos;m curious about software development, graphic design, student journalism, and all the little experiments in between.</p></div>
+  return <section id="about" className="about-panel section-offset reveal" aria-labelledby="about-title">
+    <div className="about-main"><p className="eyebrow">About</p><h2 id="about-title">Hey there!</h2><p className="about-intro">{profile.introduction}</p><p className="about-small">I&apos;m curious about software development, graphic design, student journalism, and all the little experiments in between.</p></div>
     <div className="about-side"><div className="timeline" aria-label="Education timeline">{profile.timeline.map((item) => {
       const [firstLine, secondLine] = item.detail.split('\n');
       const isCurrent = 'current' in item && item.current;

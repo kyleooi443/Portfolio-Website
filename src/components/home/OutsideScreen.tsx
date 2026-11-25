@@ -7,5 +7,5 @@ const moments = [
 ];
 
 export function OutsideScreen() {
-  return <section className="section-block outside" aria-labelledby="outside-title"><div className="section-heading"><h2 id="outside-title">Outside the screen.</h2><p>Photos from my own days will live here. These are illustrated placeholders for now.</p></div><div className="outside-grid">{moments.map((moment) => <figure key={moment.title}><div className="outside-image"><Image src={moment.image} alt={`Illustrated placeholder for ${moment.title.toLowerCase()} photo`} fill sizes="(max-width: 720px) 100vw, 390px" /></div><figcaption><strong>{moment.title}</strong><span>{moment.caption}</span></figcaption></figure>)}</div></section>;
+  return <section className="section-block outside reveal" aria-labelledby="outside-title"><div className="section-heading"><p className="eyebrow">Offline</p><h2 id="outside-title">Outside the screen.</h2><p>Photos from my own days will live here. These are illustrated placeholders for now.</p></div><div className="outside-grid">{moments.map((moment) => <figure key={moment.title}><div className="outside-image"><Image src={moment.image} alt={`Illustrated placeholder for ${moment.title.toLowerCase()} photo`} fill sizes="(max-width: 720px) 100vw, 390px" /></div><figcaption><strong>{moment.title}</strong><span>{moment.caption}</span></figcaption></figure>)}</div></section>;
 }

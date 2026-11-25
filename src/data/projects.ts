@@ -8,8 +8,6 @@ export interface Project {
   category: string;
   status: ProjectStatus;
   featured?: boolean;
-  cover: string;
-  coverAlt: string;
   accent: string;
   links?: { label: string; href: string }[];
 }
@@ -24,8 +22,6 @@ export const projects: Project[] = [
     category: 'Productivity · Software',
     status: 'Concept',
     featured: true,
-    cover: '/images/nextwise.svg',
-    coverAlt: 'Concept artwork showing a focused task list and a highlighted next step',
     accent: '#dce8de',
   },
   {
@@ -34,8 +30,6 @@ export const projects: Project[] = [
     description: 'An AI-assisted marketplace concept for giving unused items another life.',
     category: 'Marketplace · Software',
     status: 'Concept',
-    cover: '/images/reclaim.svg',
-    coverAlt: 'Concept artwork of a catalog of secondhand objects',
     accent: '#eee4d8',
   },
   {
@@ -44,8 +38,6 @@ export const projects: Project[] = [
     description: 'Exploring energy management and thoughtful demand response.',
     category: 'Energy · Research concept',
     status: 'Concept',
-    cover: '/images/liwanag.svg',
-    coverAlt: 'Concept artwork of a sun and an energy use chart',
     accent: '#f0ead5',
   },
   {
@@ -54,8 +46,6 @@ export const projects: Project[] = [
     description: 'A forecast-driven idea for energy dispatch and resilience.',
     category: 'Energy · Research concept',
     status: 'Concept',
-    cover: '/images/agos.svg',
-    coverAlt: 'Concept artwork of flowing lines and a dispatch graph',
     accent: '#dbe8e8',
   },
   {
@@ -64,8 +54,6 @@ export const projects: Project[] = [
     description: 'An experiment in AI-assisted esports commentary and broadcasting.',
     category: 'Broadcast · Creative technology',
     status: 'Concept',
-    cover: '/images/castai.svg',
-    coverAlt: 'Concept artwork of a microphone and live broadcast waveform',
     accent: '#e7e3ea',
   },
 ];

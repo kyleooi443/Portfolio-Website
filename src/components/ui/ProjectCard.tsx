@@ -1,18 +1,23 @@
-import Image from 'next/image';
+import type { CSSProperties } from 'react';
 import Link from 'next/link';
 import { ArrowUpRight } from 'lucide-react';
+import { Badge } from '@/components/ui/badge';
+import { Card } from '@/components/ui/card';
 import type { Project } from '@/data/projects';
 
-export function ProjectCard({ project }: { project: Project }) {
-  return <Link className="project-card" href={`/projects/${project.slug}`} aria-label={`Read about ${project.title}, ${project.status}`}>
-    <div className="project-art" style={{ backgroundColor: project.accent }}>
-      <Image src={project.cover} alt={project.coverAlt} fill sizes="(max-width: 720px) 100vw, (max-width: 1120px) 50vw, 520px" />
-      <span className="art-label">Concept artwork</span>
-      {project.featured && <span className="featured-label">Featured</span>}
-    </div>
-    <div className="project-card-copy">
-      <div><div className="project-meta"><span>{project.year ?? 'Year to add'}</span><span>{project.category}</span><span className="status-label">{project.status}</span></div><h3>{project.title}</h3><p className="project-description">{project.description}</p></div>
-      <ArrowUpRight size={20} strokeWidth={1.6} aria-hidden="true" />
-    </div>
+export function ProjectCard({ project, index }: { project: Project; index: number }) {
+  return <Link className={`project-card${project.featured ? ' project-card-featured' : ''}`} href={`/projects/${project.slug}`} style={{ '--project-accent': project.accent } as CSSProperties} aria-label={`Read about ${project.title}, ${project.status}`}>
+    <Card className="project-surface">
+      <div className="project-card-top">
+        <span className="project-index">{String(index + 1).padStart(2, '0')}</span>
+        <div className="project-badges">{project.featured && <Badge>Featured</Badge>}<Badge variant="outline">{project.status}</Badge></div>
+      </div>
+      <div>
+        <p className="project-category">{project.category}{project.year && <> · {project.year}</>}</p>
+        <h3>{project.title}</h3>
+        <p className="project-description">{project.description}</p>
+      </div>
+      <span className="project-cta">Read the story <ArrowUpRight size={18} aria-hidden="true" /></span>
+    </Card>
   </Link>;
 }

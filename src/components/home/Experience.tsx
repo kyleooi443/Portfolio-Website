@@ -8,5 +8,5 @@ const interests = [
 ];
 
 export function Experience() {
-  return <section className="section-block experience" aria-labelledby="experience-title"><div className="section-heading"><h2 id="experience-title">Things I&apos;ve been up to.</h2></div><div className="interest-list">{interests.map(({ icon: Icon, title, detail }) => <div className="interest-row" key={title}><span className="interest-icon"><Icon size={18} strokeWidth={1.6} aria-hidden="true" /></span><h3>{title}</h3><p>{detail}</p></div>)}</div></section>;
+  return <section className="section-block experience reveal" aria-labelledby="experience-title"><div className="section-heading"><p className="eyebrow">Interests</p><h2 id="experience-title">Things I&apos;ve been up to.</h2></div><div className="interest-list">{interests.map(({ icon: Icon, title, detail }) => <div className="interest-row" key={title}><span className="interest-icon"><Icon size={18} strokeWidth={1.6} aria-hidden="true" /></span><h3>{title}</h3><p>{detail}</p></div>)}</div></section>;
 }
