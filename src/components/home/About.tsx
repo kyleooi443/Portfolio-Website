@@ -7,7 +7,7 @@ export function About() {
   const [city, country] = profile.location.split(', ');
   return <section id="about" className="about section-offset" aria-labelledby="about-title">
     <div className="about-intro-col">
-      <h2 id="about-title">Hey there!</h2>
+      <h2 id="about-title" className="toon-title">Hey there!</h2>
       <p className="about-intro">{profile.introduction}</p>
       <p className="about-small">I&apos;m curious about software development, graphic design, student journalism, and all the little experiments in between.</p>
       {socials.length > 0 && <div className="inline-links">{socials.map((social) => <a key={social.href} href={social.href} target={social.href.startsWith('mailto:') ? undefined : '_blank'} rel={social.href.startsWith('mailto:') ? undefined : 'noopener noreferrer'}>{social.label}<ArrowUpRight size={15} aria-hidden="true" /></a>)}</div>}
