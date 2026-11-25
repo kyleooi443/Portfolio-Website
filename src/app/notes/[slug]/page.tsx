@@ -1,9 +1,9 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
-import { ArrowLeft, ArrowUpRight } from 'lucide-react';
+import { ChevronRight } from 'lucide-react';
 import { Container } from '@/components/layout/Container';
-import { Badge } from '@/components/ui/badge';
+import { PageBar } from '@/components/layout/PageBar';
 import { MdxContent } from '@/components/ui/MdxContent';
 import { getAllNotes, getNote } from '@/lib/content';
 
@@ -25,5 +25,20 @@ export default async function NotePage({ params }: Props) {
   const notes = getAllNotes();
   const currentIndex = notes.findIndex((item) => item.slug === slug);
   const next = notes.length > 1 ? notes[(currentIndex + 1) % notes.length] : undefined;
-  return <Container className="article-page"><div className="reading-column"><Link className="back-link" href="/#notes"><ArrowLeft size={17} aria-hidden="true" /> Back to notes</Link><header className="article-header"><div className="detail-meta"><Badge variant="secondary">{note.topic}</Badge><span>{note.isSample ? 'Sample article · Not published' : note.date ? new Date(note.date).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }) : 'Undated'}</span></div><h1>{note.title}</h1><p className="detail-lede">{note.excerpt}</p></header><MdxContent source={note.body} />{next && <Link className="next-story" href={`/notes/${next.slug}`}><span><span className="meta-line">Next note</span>{next.title}</span><ArrowUpRight size={22} aria-hidden="true" /></Link>}</div></Container>;
+  const date = note.date ? new Date(note.date).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }) : 'Undated';
+  return <>
+    <PageBar backHref="/#notes" backLabel="Notes" title={note.title} />
+    <Container className="detail-page">
+      <div className="reading-column">
+        <header className="article-header large-title"><h1>{note.title}</h1><p className="detail-lede">{note.excerpt}</p></header>
+        <dl className="info-list">
+          <div><dt>Topic</dt><dd>{note.topic}</dd></div>
+          {note.isSample && <div><dt>Status</dt><dd>Sample article</dd></div>}
+          <div><dt>Published</dt><dd>{note.isSample ? 'Not yet' : date}</dd></div>
+        </dl>
+        <MdxContent source={note.body} />
+      </div>
+      {next && <Link className="next-story" href={`/notes/${next.slug}`}><span><span className="section-label">Next note</span>{next.title}</span><ChevronRight size={22} aria-hidden="true" /></Link>}
+    </Container>
+  </>;
 }

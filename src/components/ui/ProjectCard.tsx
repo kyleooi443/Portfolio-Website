@@ -1,23 +1,44 @@
-import type { CSSProperties } from 'react';
+import { ViewTransition, type CSSProperties } from 'react';
 import Link from 'next/link';
-import { ArrowUpRight } from 'lucide-react';
+import { ChevronRight, ListChecks, Mic, Recycle, Sun, Waves, type LucideIcon } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
-import { Card } from '@/components/ui/card';
 import type { Project } from '@/data/projects';
 
-export function ProjectCard({ project, index }: { project: Project; index: number }) {
-  return <Link className={`project-card${project.featured ? ' project-card-featured' : ''}`} href={`/projects/${project.slug}`} style={{ '--project-accent': project.accent } as CSSProperties} aria-label={`Read about ${project.title}, ${project.status}`}>
-    <Card className="project-surface">
-      <div className="project-card-top">
-        <span className="project-index">{String(index + 1).padStart(2, '0')}</span>
-        <div className="project-badges">{project.featured && <Badge>Featured</Badge>}<Badge variant="outline">{project.status}</Badge></div>
-      </div>
-      <div>
-        <p className="project-category">{project.category}{project.year && <> · {project.year}</>}</p>
-        <h3>{project.title}</h3>
-        <p className="project-description">{project.description}</p>
-      </div>
-      <span className="project-cta">Read the story <ArrowUpRight size={18} aria-hidden="true" /></span>
-    </Card>
+// Glyphs chosen from each project's subject; new projects fall back to a monogram.
+const glyphs: Record<string, LucideIcon> = { nextwise: ListChecks, reclaim: Recycle, 'project-liwanag': Sun, agos: Waves, castai: Mic };
+
+const accentStyle = (project: Project) => ({ '--project-accent': project.accent }) as CSSProperties;
+
+export function AppIcon({ project, size = 'md' }: { project: Project; size?: 'md' | 'lg' }) {
+  const Glyph = glyphs[project.slug];
+  return <ViewTransition name={`app-icon-${project.slug}`} share="morph" default="none">
+    <span className={`app-icon${size === 'lg' ? ' app-icon-lg' : ''}`} style={accentStyle(project)} aria-hidden="true">{Glyph ? <Glyph /> : project.title[0]}</span>
+  </ViewTransition>;
+}
+
+export function FeaturedProject({ project }: { project: Project }) {
+  return <Link className="today-card" href={`/projects/${project.slug}`} style={accentStyle(project)} aria-label={`Read about ${project.title}, ${project.status}`}>
+    <span className="today-kicker">Featured</span>
+    <h3 className="today-title">{project.title}</h3>
+    <p className="today-desc">{project.description}</p>
+    <span className="today-app">
+      <AppIcon project={project} />
+      <span className="today-app-text"><strong>{project.title}</strong><span>{project.category}{project.year && `, ${project.year}`}</span></span>
+      <Badge variant="outline">{project.status}</Badge>
+      <span className="read-pill">Read</span>
+    </span>
+  </Link>;
+}
+
+export function ProjectRow({ project }: { project: Project }) {
+  return <Link className="app-row" href={`/projects/${project.slug}`} style={accentStyle(project)} aria-label={`Read about ${project.title}, ${project.status}`}>
+    <AppIcon project={project} />
+    <span className="app-row-text">
+      <strong>{project.title}</strong>
+      <span className="app-row-desc">{project.description}</span>
+      <span className="app-row-meta"><Badge variant="outline">{project.status}</Badge><span>{project.category}{project.year && `, ${project.year}`}</span></span>
+    </span>
+    <span className="read-pill">Read</span>
+    <ChevronRight className="app-row-chevron" size={20} aria-hidden="true" />
   </Link>;
 }

@@ -1,6 +1,7 @@
-import type { Metadata } from 'next';
-import { Navbar } from '@/components/layout/Navbar';
+import type { Metadata, Viewport } from 'next';
+import { Navbar, TabBar } from '@/components/layout/Navbar';
 import { Footer } from '@/components/layout/Footer';
+import { themeScript } from '@/components/layout/ThemeControl';
 import { siteUrl } from '@/lib/site';
 import './globals.css';
 
@@ -19,6 +20,15 @@ export const metadata: Metadata = {
   twitter: { card: 'summary_large_image' },
 };
 
+export const viewport: Viewport = {
+  viewportFit: 'cover',
+  themeColor: [
+    { media: '(prefers-color-scheme: light)', color: '#F2F2F7' },
+    { media: '(prefers-color-scheme: dark)', color: '#000000' },
+  ],
+};
+
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
-  return <html lang="en"><body id="top"><a className="skip-link" href="#main">Skip to content</a><Navbar /><main id="main">{children}</main><Footer /></body></html>;
+  // suppressHydrationWarning: the theme script may set data-theme on <html> before React hydrates.
+  return <html lang="en" suppressHydrationWarning><head><script dangerouslySetInnerHTML={{ __html: themeScript }} /></head><body id="top"><a className="skip-link" href="#main">Skip to content</a><Navbar /><main id="main">{children}</main><Footer /><TabBar /></body></html>;
 }
