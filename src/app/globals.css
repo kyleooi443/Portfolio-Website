@@ -332,28 +332,43 @@ main { padding-top: var(--nav-offset); }
 @media (hover: hover) { .app-row:hover .read-pill { background: var(--primary); color: var(--primary-foreground); } }
 
 /* Notes, styled like the Notes app list */
-.note-list { max-width: 760px; }
-.note-row { position: relative; display: flex; align-items: center; gap: 14px; min-height: 76px; padding: 14px 16px; }
-.note-row + .note-row::before { content: ''; position: absolute; top: 0; right: 0; left: 62px; height: 1px; background: var(--border); }
+.note-row { position: relative; display: flex; align-items: center; gap: 16px; min-height: 96px; padding: 18px 20px; transition: background-color .2s ease; }
+.note-row + .note-row::before { content: ''; position: absolute; top: 0; right: 0; left: 68px; height: 1px; background: var(--border); }
 .note-row:active { background: var(--muted); }
-.note-row .row-icon { background: var(--note-tint); color: var(--primary); }
-.note-row-sage { --note-tint: var(--tint-sage); }
-.note-row-sand { --note-tint: var(--tint-sand); }
-.note-row-blue { --note-tint: var(--tint-blue); }
-.note-row-text { display: flex; flex: 1; flex-direction: column; gap: 2px; min-width: 0; }
-.note-row-text strong { font-size: 1rem; font-weight: 600; }
-.note-row-text > span { display: -webkit-box; overflow: hidden; color: var(--muted-foreground); font-size: 0.9412rem; line-height: 1.4; -webkit-box-orient: vertical; -webkit-line-clamp: 2; }
-.note-row-text b { margin-right: 6px; color: var(--foreground); font-weight: 500; }
+@media (hover: hover) { .note-row:hover { background: color-mix(in srgb, var(--muted) 55%, transparent); } .note-row:hover .note-read { background: var(--primary); color: var(--primary-foreground); } }
+.note-row .row-icon { align-self: flex-start; width: 36px; height: 36px; margin-top: 2px; background: var(--note-tint); color: var(--note-ink); }
+.note-row-sage { --note-tint: color-mix(in srgb, var(--primary) 14%, transparent); --note-ink: var(--primary); }
+.note-row-sand { --note-tint: color-mix(in srgb, #AF52DE 16%, transparent); --note-ink: light-dark(#8E3FB8, #D49BF0); }
+.note-row-blue { --note-tint: color-mix(in srgb, #007AFF 14%, transparent); --note-ink: light-dark(#0062CC, #6AB1FF); }
+.note-row-text { display: flex; flex: 1; flex-direction: column; gap: 3px; min-width: 0; }
+.note-row-topic { color: var(--note-ink); font-size: 0.7647rem; font-weight: 600; }
+.note-row-text strong { font-family: var(--font-heading); font-size: 1.0588rem; font-weight: 600; line-height: 1.3; letter-spacing: -.01em; }
+.note-row-excerpt { color: var(--muted-foreground); font-size: 0.8824rem; line-height: 1.45; }
+.note-row-meta { display: flex; flex-wrap: wrap; gap: 2px 12px; margin-top: 4px; color: var(--muted-foreground); font-size: 0.7647rem; }
+.note-row-meta > span { display: inline-flex; align-items: center; gap: 4px; }
+.note-read { min-width: 0; white-space: nowrap; }
+.note-chevron { display: none; flex: none; }
 
-/* Outside the screen: a Photos album grid */
-.album-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
-.album { min-width: 0; margin: 0; }
-.album-cover { position: relative; aspect-ratio: 46 / 39; overflow: hidden; border-radius: var(--radius-2xl); background: var(--muted); transition: translate .35s var(--spring), box-shadow .35s ease; }
-.album-cover img { object-fit: cover; object-position: left bottom; }
-@media (hover: hover) { .album:hover .album-cover { translate: 0 -4px; box-shadow: var(--lift-shadow); } }
-.album figcaption { display: flex; flex-direction: column; gap: 2px; padding: 10px 2px 0; }
-.album strong { font-size: 0.8824rem; font-weight: 600; }
-.album figcaption span { color: var(--muted-foreground); font-size: 0.8235rem; line-height: 1.45; }
+/* Outside the screen: Photos "Memories". Placeholders use the hero's wallpaper colors with an ASCII scene. */
+.album-grid { display: grid; grid-template-columns: minmax(0, 1.45fr) minmax(0, 1fr); grid-auto-rows: 268px; gap: 16px; }
+.album { position: relative; min-width: 0; margin: 0; overflow: hidden; border-radius: var(--radius-3xl); background: var(--muted); transition: translate .35s var(--spring), box-shadow .35s ease; }
+.album:first-child { grid-row: span 2; }
+@media (hover: hover) { .album:hover { translate: 0 -4px; box-shadow: var(--lift-shadow); } .album:hover .album-cover pre, .album:hover .album-cover img { scale: 1.06; } }
+/* Padding keeps the scene clear of the badge (top) and the title scrim (bottom). */
+.album-cover { position: absolute; inset: 0; display: grid; place-items: center; padding: 52px 0 84px; }
+.album-cover img { object-fit: cover; transition: scale .6s var(--spring); }
+.album-blue { --wall: #161d3d; --blob-a: #4a5fd0; --blob-b: #5fb3d9; }
+.album-purple { --wall: #2a1838; --blob-a: #7b4bb0; --blob-b: #d06aa0; }
+.album-rose { --wall: #36131f; --blob-a: #c4506e; --blob-b: #f09a6a; }
+.album-placeholder { background: radial-gradient(70% 70% at 82% 12%, var(--blob-a), transparent 70%), radial-gradient(60% 60% at 8% 100%, var(--blob-b), transparent 70%), var(--wall); }
+.album-placeholder pre { margin: 0; color: rgb(255 255 255 / .85); font-family: "Monocraft", ui-monospace, monospace; font-size: clamp(9px, .9vw, 13px); font-weight: 700; line-height: 1.2; transition: scale .6s var(--spring); }
+.album:first-child .album-placeholder pre { font-size: clamp(11px, 1.45vw, 20px); }
+.album-badge { position: absolute; top: 14px; left: 14px; display: inline-flex; align-items: center; gap: 6px; padding: 6px 11px; border-radius: 999px; background: rgb(0 0 0 / .35); color: #FFFFFF; font-size: 0.7059rem; font-weight: 600; -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px); }
+/* Memories-style title on the cover, over a soft scrim for legibility. */
+.album figcaption { position: absolute; right: 0; bottom: 0; left: 0; display: flex; flex-direction: column; gap: 4px; padding: 48px 22px 20px; background: linear-gradient(transparent, rgb(0 0 0 / .6)); color: #FFFFFF; }
+.album strong { font-family: var(--font-heading); font-size: 1.2941rem; font-weight: 700; line-height: 1.15; letter-spacing: -.02em; }
+.album:first-child strong { font-size: clamp(1.6rem, 2.6vw, 2.2rem); }
+.album figcaption span { max-width: 420px; color: rgb(255 255 255 / .86); font-size: 0.8235rem; line-height: 1.45; }
 
 /* Contact: inset grouped list */
 .contact { display: grid; grid-template-columns: minmax(0, 1fr) minmax(280px, .9fr); align-items: center; gap: 48px; margin-bottom: 112px; padding: 48px; border-radius: var(--radius-4xl); background: var(--accent); }
@@ -479,7 +494,11 @@ a.grouped-row:active { background: var(--muted); }
   .app-row { scroll-snap-align: start; }
   .app-row:nth-child(even)::after, .app-row:nth-last-child(2)::after { display: none; }
   .app-row:nth-child(odd)::after { display: block; }
-  .album-grid { grid-auto-columns: 72%; grid-auto-flow: column; grid-template-columns: none; gap: 12px; }
+  .album-grid { grid-auto-columns: 80%; grid-auto-flow: column; grid-auto-rows: 360px; grid-template-columns: none; gap: 12px; }
+  .album:first-child { grid-row: auto; }
+  .album-placeholder pre, .album:first-child .album-placeholder pre { font-size: 11px; }
+  .note-row { padding: 16px; }
+  .note-row + .note-row::before { left: 64px; }
   .album { scroll-snap-align: start; }
   .page-bar-title { max-width: 40vw; }
   .hero-wallpaper { height: 500px; border-radius: var(--radius-3xl); }
@@ -519,13 +538,16 @@ a.grouped-row:active { background: var(--muted); }
   .contact { margin-bottom: 72px; padding: 28px 20px; }
 
 
-  .detail-page { padding-top: 16px; padding-bottom: 64px; }
+  /* Phones have no top pill, so pages with the iOS nav bar (PageBar) clear its 68px here. */
+  .detail-page { padding-top: 64px; padding-bottom: 64px; }
   .product-header { gap: 18px; }
   .app-icon-lg { --icon: 88px; }
   .prose-content h1, .prose-content h2 { font-size: 1.3529rem; }
 }
 
 @media (max-width: 420px) {
+  .note-read { display: none; }
+  .note-chevron { display: block; }
   .hero h1 { font-size: clamp(40px, 12.5vw, 50px); }
   .hero-tagline { max-width: 240px; font-size: 0.8824rem; }
   .portrait { width: 148px; }

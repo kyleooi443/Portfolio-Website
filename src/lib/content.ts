@@ -10,6 +10,8 @@ export interface NoteMeta {
   topic: string;
   isSample: boolean;
   surface: 'sage' | 'sand' | 'blue';
+  /** Estimated at 200 words per minute from the note body. */
+  readingMinutes: number;
 }
 
 export interface Note extends NoteMeta {
@@ -27,13 +29,24 @@ function readMdx(directory: string, slug: string) {
   return matter(fs.readFileSync(filename, 'utf8'));
 }
 
+// Strips MDX down to readable words (tags, link targets, heading markers, emphasis, code ticks) for word counts.
+export function plainText(mdx: string): string {
+  return mdx
+    .replace(/<[^>]*>/g, ' ')
+    .replace(/!?\[([^\]]*)\]\([^)]*\)/g, '$1')
+    .replace(/^#{1,6}\s+/gm, '')
+    .replace(/[*_`>~]/g, '')
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
 export function getAllNotes(): NoteMeta[] {
   if (!fs.existsSync(noteDirectory)) return [];
   return fs.readdirSync(noteDirectory)
     .filter((file) => file.endsWith('.mdx'))
     .map((file) => getNote(file.slice(0, -4)))
     .filter((note): note is Note => Boolean(note))
-    .map(({ slug, title, excerpt, date, topic, isSample, surface }) => ({ slug, title, excerpt, date, topic, isSample, surface }))
+    .map(({ slug, title, excerpt, date, topic, isSample, surface, readingMinutes }) => ({ slug, title, excerpt, date, topic, isSample, surface, readingMinutes }))
     .sort((a, b) => (b.date ?? '').localeCompare(a.date ?? ''));
 }
 
@@ -43,6 +56,7 @@ export function getNote(slug: string): Note | undefined {
   const data = parsed.data as Partial<NoteMeta>;
   const rawDate = parsed.data.date as unknown;
   if (!data.title || !data.excerpt || !data.topic) return undefined;
+  const text = plainText(parsed.content);
   return {
     slug,
     title: data.title,
@@ -51,6 +65,7 @@ export function getNote(slug: string): Note | undefined {
     topic: data.topic,
     isSample: Boolean(data.isSample),
     surface: data.surface ?? 'sage',
+    readingMinutes: Math.max(1, Math.round(text.split(' ').length / 200)),
     body: parsed.content,
   };
 }
