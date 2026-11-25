@@ -2,46 +2,76 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Menu, X } from 'lucide-react';
-import { useEffect, useState } from 'react';
-import { Container } from './Container';
+import { LayoutGrid, MessageCircle, NotebookPen, UserRound } from 'lucide-react';
+import { useEffect, useState, type CSSProperties } from 'react';
+import { ThemeControl } from './ThemeControl';
 
 const links = [
-  { label: 'About', hash: 'about' },
-  { label: 'Projects', hash: 'projects' },
-  { label: 'Notes', hash: 'notes' },
-  { label: 'Contact', hash: 'contact' },
+  { label: 'About', hash: 'about', icon: UserRound },
+  { label: 'Projects', hash: 'projects', icon: LayoutGrid },
+  { label: 'Notes', hash: 'notes', icon: NotebookPen },
+  { label: 'Contact', hash: 'contact', icon: MessageCircle },
 ];
 
-export function Navbar() {
+// Which section to highlight: the one in view on the home page, or the route's section elsewhere.
+function useActiveSection() {
   const pathname = usePathname();
-  const [open, setOpen] = useState(false);
+  const [visibleSection, setVisibleSection] = useState<string>();
+  const routeSection = pathname.split('/')[1];
 
   useEffect(() => {
-    if (!open) return;
-    const closeOnEscape = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') setOpen(false);
-    };
-    window.addEventListener('keydown', closeOnEscape);
-    return () => window.removeEventListener('keydown', closeOnEscape);
-  }, [open]);
+    if (pathname !== '/') return;
+    const observer = new IntersectionObserver((entries) => {
+      for (const entry of entries) if (entry.isIntersecting) setVisibleSection(entry.target.id);
+    }, { rootMargin: '-45% 0px -50% 0px' });
+    for (const { hash } of links) {
+      const section = document.getElementById(hash);
+      if (section) observer.observe(section);
+    }
+    return () => observer.disconnect();
+  }, [pathname]);
 
-  return (
-    <header className="site-header">
-      <Container className="nav-inner flex items-center justify-between">
-        <Link className="wordmark" href="/" onClick={() => setOpen(false)} aria-label="Kyle, home">kyle<span>.</span></Link>
-        <nav className="desktop-nav" aria-label="Primary navigation">
-          {links.map(({ label, hash }) => <Link key={hash} href={`/#${hash}`} aria-current={pathname.startsWith(`/${hash}`) ? 'page' : undefined}>{label}</Link>)}
-        </nav>
-        <button className="menu-toggle" type="button" aria-expanded={open} aria-controls="mobile-navigation" aria-label={open ? 'Close menu' : 'Open menu'} onClick={() => setOpen(!open)}>
-          {open ? <X size={22} aria-hidden="true" /> : <Menu size={22} aria-hidden="true" />}
-        </button>
-      </Container>
-      <nav id="mobile-navigation" className={`mobile-nav${open ? ' is-open' : ''}`} aria-label="Mobile navigation" inert={!open}>
-        <Container>
-          {links.map(({ label, hash }) => <Link key={hash} href={`/#${hash}`} onClick={() => setOpen(false)}>{label}</Link>)}
-        </Container>
+  const active = pathname === '/' ? visibleSection : routeSection;
+  const index = links.findIndex(({ hash }) => hash === active);
+  // Drives the sliding selection capsule in CSS.
+  const indicator = { '--i': Math.max(index, 0), '--on': index < 0 ? 0 : 1 } as CSSProperties;
+  return { pathname, active, indicator };
+}
+
+export function Navbar() {
+  const { pathname, active, indicator } = useActiveSection();
+  // Project and note pages render their own iOS-style nav bar (PageBar) instead of the pill.
+  if (/^\/(projects|notes)\/./.test(pathname)) return null;
+
+  return <header className="site-header">
+      <nav className="nav-pill glass" aria-label="Primary navigation">
+        <div className="nav-links" style={indicator}>
+          {links.map(({ label, hash }) => <Link key={hash} href={`/#${hash}`} data-active={active === hash || undefined}>{label}</Link>)}
+        </div>
       </nav>
-    </header>
-  );
+      <div className="theme-pill glass"><ThemeControl name="appearance-nav" compact /></div>
+    </header>;
+}
+
+// Rendered after the footer so keyboard order follows the page; CSS pins it to the bottom on phones.
+export function TabBar() {
+  const { active, indicator } = useActiveSection();
+  const [compact, setCompact] = useState(false);
+
+  // iOS 26 behavior: the tab bar shrinks while scrolling down and returns on any scroll up.
+  useEffect(() => {
+    let lastY = window.scrollY;
+    const onScroll = () => {
+      const y = window.scrollY;
+      if (Math.abs(y - lastY) < 8) return;
+      setCompact(y > lastY && y > 240);
+      lastY = y;
+    };
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
+  }, []);
+
+  return <nav className="tab-bar glass" data-compact={compact || undefined} style={indicator} aria-label="Sections">
+    {links.map(({ label, hash, icon: Icon }) => <Link key={hash} href={`/#${hash}`} data-active={active === hash || undefined}><Icon size={22} strokeWidth={1.8} aria-hidden="true" /><span>{label}</span></Link>)}
+  </nav>;
 }

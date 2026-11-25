@@ -1,15 +1,16 @@
-import Image from 'next/image';
-import { ArrowDownRight } from 'lucide-react';
+import { MapPin } from 'lucide-react';
 import { profile } from '@/data/profile';
+import { AsciiTide } from './AsciiTide';
 import { HeroSurface } from './HeroSurface';
+import { PortraitRobot } from './PortraitRobot';
 
 export function Hero() {
   return <section className="hero" aria-labelledby="hero-title">
     <HeroSurface>
-      <div className="hero-image" aria-hidden="true" />
-      <div className="hero-copy"><h1 id="hero-title">Kyle Andrew<br />Masilang</h1></div>
-      <div className="portrait-wrap"><div className="portrait"><Image src="/images/kyle-portrait.png" alt="Portrait of Kyle Andrew Masilang" fill priority sizes="(max-width: 390px) 170px, (max-width: 700px) 185px, (max-width: 1000px) 220px, 260px" /></div></div>
+      <div className="hero-wallpaper" aria-hidden="true"><AsciiTide /></div>
+      <div className="hero-copy"><h1 id="hero-title">Kyle Andrew<br />Masilang</h1><p className="hero-tagline">{profile.tagline}</p></div>
+      <PortraitRobot />
     </HeroSurface>
-    <div className="hero-bottom"><span>{profile.location}</span><a href="#about">A little more about me <ArrowDownRight size={16} aria-hidden="true" /></a></div>
+    <div className="hero-bottom"><a className="capsule-button capsule-filled" href="#projects">View projects</a><a className="capsule-button capsule-gray" href="#contact">Contact</a><span className="hero-location"><MapPin size={16} aria-hidden="true" />{profile.location}</span></div>
   </section>;
 }

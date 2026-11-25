@@ -2,14 +2,18 @@
 
 import { useRef, useState, type MouseEvent, type PointerEvent, type ReactNode } from 'react';
 
-const hues = ['purple', 'indigo', 'forest', 'rose'] as const;
+const hues = ['blue', 'purple', 'forest', 'rose'] as const;
 
 export function HeroSurface({ children }: { children: ReactNode }) {
   const bannerRef = useRef<HTMLDivElement>(null);
   const [hueIndex, setHueIndex] = useState(0);
+  const [changes, setChanges] = useState(0);
   const hue = hues[hueIndex];
 
-  const cycleHue = () => setHueIndex((index) => (index + 1) % hues.length);
+  const cycleHue = () => {
+    setHueIndex((index) => (index + 1) % hues.length);
+    setChanges((count) => count + 1);
+  };
 
   const followPointer = (event: PointerEvent<HTMLDivElement>) => {
     if (event.pointerType !== 'mouse' || !bannerRef.current) return;
@@ -25,8 +29,12 @@ export function HeroSurface({ children }: { children: ReactNode }) {
   };
 
   return <div ref={bannerRef} className="hero-banner" data-hue={hue} onPointerMove={followPointer} onClick={handleBannerClick}>
-    {children}
-    <button className="hero-hue-keyboard" type="button" onClick={(event) => { event.stopPropagation(); cycleHue(); }} aria-label={`Change hero color. Current color: ${hue}.`}>Change color</button>
+    {/* Alternating data-bump restarts the squash animation on every change without remounting (keeps keyboard focus). */}
+    <button className="island" type="button" data-bump={changes ? changes % 2 : undefined} onClick={(event) => { event.stopPropagation(); cycleHue(); }} aria-label={`Change hero color. Current color: ${hue}.`}>
+      <span className="island-swatch" aria-hidden="true" /><span aria-hidden="true">{hue}</span>
+    </button>
     <span className="sr-only" aria-live="polite">Hero color: {hue}.</span>
+    {/* After the chip in DOM order so keyboard focus matches the visual top-to-bottom order. */}
+    {children}
   </div>;
 }
